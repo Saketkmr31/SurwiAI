@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Surwi — Your AI Workspace</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Inter", sans-serif;
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(124, 58, 237, 0.22),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(168, 85, 247, 0.18),
+                    transparent 30%
+                ),
+                #08060d;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .background-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(139, 92, 246, 0.12);
+            filter: blur(120px);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            padding: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* LOGO */
+
+        .logo {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .logo-mark {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 14px;
+            border-radius: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+            font-weight: 800;
+
+            background: linear-gradient(
+                135deg,
+                #8b5cf6,
+                #c084fc
+            );
+
+            box-shadow:
+                0 0 40px rgba(139, 92, 246, 0.35);
+        }
+
+        .logo h1 {
+            font-size: 30px;
+            letter-spacing: -1.5px;
+            font-weight: 800;
+        }
+
+        .logo p {
+            margin-top: 8px;
+            color: #918b9e;
+            font-size: 14px;
+        }
+
+        /* CARD */
+
+        .card {
+            padding: 34px;
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 24px;
+
+            background: rgba(18, 14, 26, 0.78);
+
+            backdrop-filter: blur(24px);
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.45),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        }
+
+        .card h2 {
+            font-size: 23px;
+            letter-spacing: -0.7px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #918b9e;
+            font-size: 14px;
+            margin-bottom: 26px;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            display: none;
+
+            padding: 12px 14px;
+            margin-bottom: 18px;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .message.success {
+            display: block;
+
+            color: #7ee2a8;
+
+            border: 1px solid rgba(74, 222, 128, 0.25);
+
+            background: rgba(34, 197, 94, 0.08);
+        }
+
+        .message.error {
+            display: block;
+
+            color: #ff8585;
+
+            border: 1px solid rgba(248, 113, 113, 0.25);
+
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        /* GOOGLE */
+
+        .google-btn {
+            width: 100%;
+            height: 52px;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 13px;
+
+            background: #ffffff;
+            color: #17131c;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+
+            transition: 0.2s ease;
+        }
+
+        .google-btn:hover {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 30px rgba(255, 255, 255, 0.08);
+        }
+
+        .google-icon {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* DIVIDER */
+
+        .divider {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 24px 0;
+
+            color: #686270;
+            font-size: 12px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+            height: 1px;
+
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* FORM */
+
+        label {
+            display: block;
+
+            font-size: 12px;
+            color: #b7b0c0;
+
+            margin-bottom: 8px;
+        }
+
+        .input {
+            width: 100%;
+            height: 50px;
+
+            padding: 0 15px;
+            margin-bottom: 17px;
+
+            border-radius: 12px;
+
+            border: 1px solid rgba(255, 255, 255, 0.09);
+
+            background: rgba(255, 255, 255, 0.035);
+
+            color: white;
+
+            outline: none;
+
+            font-family: inherit;
+            font-size: 13px;
+
+            transition: 0.2s ease;
+        }
+
+        .input::placeholder {
+            color: #686270;
+        }
+
+        .input:focus {
+            border-color: rgba(139, 92, 246, 0.8);
+
+            box-shadow:
+                0 0 0 3px rgba(139, 92, 246, 0.12);
+        }
+
+        /* LOGIN BUTTON */
+
+        .login-btn {
+            width: 100%;
+            height: 52px;
+
+            border: 0;
+            border-radius: 13px;
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c3aed,
+                    #a855f7
+                );
+
+            box-shadow:
+                0 10px 30px rgba(124, 58, 237, 0.25);
+
+            transition: 0.2s ease;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 14px 38px rgba(124, 58, 237, 0.35);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* SIGNUP */
+
+        .signup {
+            text-align: center;
+
+            margin-top: 22px;
+
+            font-size: 13px;
+
+            color: #827b8a;
+        }
+
+        .signup a {
+            color: #b78cff;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+        .signup a:hover {
+            color: #d0b0ff;
+        }
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 22px;
+
+            font-size: 11px;
+
+            color: #514b57;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 520px) {
+
+            .container {
+                padding: 18px;
+            }
+
+            .card {
+                padding: 26px 20px;
+                border-radius: 20px;
+            }
+
+            .logo h1 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-glow"></div>
+
+    <main class="container">
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <div class="logo-mark">
+                S
+            </div>
+
+            <h1>
+                Surwi
+            </h1>
+
+            <p>
+                Your AI workspace, reimagined.
+            </p>
+
+        </div>
+
+
+        <!-- LOGIN CARD -->
+
+        <section class="card">
+
+            <h2>
+                Welcome back
+            </h2>
+
+            <p class="subtitle">
+                Sign in to continue to Surwi.
+            </p>
+
+
+            <!-- LOGIN MESSAGE -->
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+            <!-- GOOGLE -->
+
+            <button
+                class="google-btn"
+                id="googleBtn"
+                type="button"
+            >
+
+                <span class="google-icon">
+                    G
+                </span>
+
+                Continue with Google
+
+            </button>
+
+
+            <!-- DIVIDER -->
+
+            <div class="divider">
+                OR
+            </div>
+
+
+            <!-- LOGIN FORM -->
+
+            <form id="loginForm">
+
+                <label for="email">
+                    Email address
+                </label>
+
+                <input
+                    class="input"
+                    id="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    class="input"
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                    required
+                >
+
+
+                <button
+                    class="login-btn"
+                    id="loginBtn"
+                    type="submit"
+                >
+                    Sign in to Surwi
+                </button>
+
+            </form>
+
+
+            <!-- SIGNUP -->
+
+            <div class="signup">
+
+                Don't have an account?
+
+                <a
+                    href="#"
+                    id="signupLink"
+                >
+                    Create account
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+            © 2026 Surwi AI · Built for what's next.
+        </div>
+
+    </main>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+        const loginForm =
+            document.getElementById("loginForm");
+
+        const loginBtn =
+            document.getElementById("loginBtn");
+
+        const googleBtn =
+            document.getElementById("googleBtn");
+
+        const message =
+            document.getElementById("message");
+
+        const signupLink =
+            document.getElementById("signupLink");
+
+
+        /*
+         * If already logged in,
+         * don't show login page again.
+         */
+
+        const existingToken =
+            localStorage.getItem("surwi_access_token");
+
+        const existingUser =
+            localStorage.getItem("surwi_user");
+
+
+        if (existingToken && existingUser) {
+
+            window.location.href = "/dashboard";
+
+        }
+
+
+        /*
+         * Show message
+         */
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+
+            message.className =
+                "message " + type;
+
+        }
+
+
+        /*
+         * LOGIN
+         */
+
+        loginForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                if (!email || !password) {
+
+                    showMessage(
+                        "Please enter your email and password.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                loginBtn.disabled = true;
+
+                loginBtn.textContent =
+                    "Signing in...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/auth/login",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body: JSON.stringify({
+                                    email: email,
+                                    password: password
+                                })
+                            }
+                        );
+
+
+                    const data =
+                        await response.json();
+
+
+                    /*
+                     * Backend error
+                     */
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data.detail ||
+                            "Login failed."
+                        );
+
+                    }
+
+
+                    /*
+                     * Save JWT
+                     */
+
+                    localStorage.setItem(
+                        "surwi_access_token",
+                        data.access_token
+                    );
+
+
+                    /*
+                     * Save user information
+                     */
+
+                    localStorage.setItem(
+                        "surwi_user",
+                        JSON.stringify(data.user)
+                    );
+
+
+                    /*
+                     * Success
+                     */
+
+                    showMessage(
+                        "Authentication successful. Opening Surwi...",
+                        "success"
+                    );
+
+
+                    loginBtn.textContent =
+                        "Welcome to Surwi";
+
+
+                    /*
+                     * Redirect
+                     */
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "/dashboard";
+
+                        },
+                        500
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    showMessage(
+                        error.message ||
+                        "Unable to sign in.",
+                        "error"
+                    );
+
+
+                    loginBtn.disabled = false;
+
+                    loginBtn.textContent =
+                        "Sign in to Surwi";
+
+                }
+
+            }
+        );
+
+
+        /*
+         * GOOGLE LOGIN
+         *
+         * Not implemented yet.
+         * We will connect real Google OAuth later.
+         */
+
+        googleBtn.addEventListener(
+            "click",
+            function () {
+
+                showMessage(
+                    "Google login will be connected next.",
+                    "error"
+                );
+
+            }
+        );
+
+
+        /*
+         * SIGNUP
+         *
+         * Signup UI will be added next.
+         */
+
+        signupLink.addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                showMessage(
+                    "Account creation screen will be added next.",
+                    "error"
+                );
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>

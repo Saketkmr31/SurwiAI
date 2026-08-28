@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SurwiAI — Dashboard</title>
+<style>
+.file-input-accessible{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden}
+.upload-area{position:relative;display:block;width:100%}
+.upload-area.dragging{border-color:#a855f7;background:#7c3aed18}
+.file-action{transition:background .15s,border-color .15s,transform .15s}
+.file-action:hover{background:#8b5cf622;border-color:#a855f766;transform:translateY(-1px)}
+*{box-sizing:border-box;margin:0;padding:0}body{min-height:100vh;font-family:Inter,Arial,sans-serif;background:#08060d;color:#fff;overflow:hidden}button,input,textarea{font:inherit}.app{display:flex;height:100vh}.sidebar{width:250px;padding:22px 16px;border-right:1px solid #ffffff12;background:#0d0a13;display:flex;flex-direction:column}.brand{display:flex;gap:11px;align-items:center;padding:5px 8px 25px}.brand-icon,.avatar,.card-icon,.file-icon,.message-avatar{display:flex;align-items:center;justify-content:center}.brand-icon{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#b66cff);font-weight:800}.brand-name{font-size:19px;font-weight:800}.new-chat,.upload-btn,.send-btn{border:0;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;font-weight:600}.new-chat{height:46px;border-radius:12px;margin-bottom:25px}.section-title{font-size:10px;color:#686270;text-transform:uppercase;padding:0 10px 10px}.nav-item{height:43px;padding:0 12px;display:flex;align-items:center;gap:12px;border-radius:10px;color:#aaa3b3;font-size:13px;cursor:pointer}.nav-item.active,.nav-item:hover{background:#ffffff0e;color:#fff}.nav-icon{width:20px;text-align:center}.sidebar-bottom{margin-top:auto}.user-card{padding:12px;border:1px solid #ffffff12;border-radius:13px;display:flex;gap:10px;align-items:center}.avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#c084fc);font-weight:700}.user-info{overflow:hidden}.user-name{font-size:12px;font-weight:600}.user-email{font-size:10px;color:#706a77;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.logout-btn{width:100%;height:42px;margin-top:9px;border:1px solid #ffffff12;border-radius:10px;background:#ffffff05;color:#aaa3b3;text-align:left;padding:0 12px;cursor:pointer}.main{flex:1;min-width:0;display:flex;flex-direction:column}.topbar{height:68px;border-bottom:1px solid #ffffff12;display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex-shrink:0}.page-title{font-size:15px;font-weight:600}.status{font-size:11px;color:#8d8794}.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#8b5cf6;margin-right:7px;box-shadow:0 0 12px #8b5cf6}.view{display:none;flex:1;min-height:0}.dashboard{overflow:auto;padding:55px 35px}.hero,.chat-inner,.history-inner,.files-inner{max-width:900px;margin:auto}.welcome{text-align:center;margin-bottom:45px}.welcome-badge{display:inline-block;padding:7px 12px;border:1px solid #a855f733;border-radius:30px;color:#b99aff;font-size:11px;margin-bottom:18px}.welcome h1{font-size:38px;margin-bottom:10px}.welcome p,.card p,.section-head p{color:#77717e;font-size:13px}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{padding:22px;min-height:145px;border:1px solid #ffffff13;border-radius:18px;background:#120e1a99;cursor:pointer}.card:hover{border-color:#a855f744}.card-icon{width:38px;height:38px;border-radius:11px;background:#8b5cf622;margin-bottom:18px}.card h3{font-size:14px;margin-bottom:7px}.chat-view{flex-direction:column}.chat-messages{flex:1;overflow:auto;padding:30px 35px 130px}.chat-empty{min-height:55vh;display:flex;align-items:center;justify-content:center;text-align:center}.chat-empty h2{font-size:28px;margin-bottom:10px}.message-row{display:flex;gap:12px;margin-bottom:22px}.message-row.user{justify-content:flex-end}.message-avatar{width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#c084fc);font-size:12px;font-weight:700}.message-row.user .message-avatar{order:2}.message-bubble{max-width:78%;padding:12px 15px;border-radius:15px;background:#ffffff0b;border:1px solid #ffffff13;font-size:13px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}.message-row.user .message-bubble{background:linear-gradient(135deg,#7c3aed,#a855f7);border:0}
+.message-bubble p{margin:0 0 9px}.message-bubble p:last-child{margin-bottom:0}.message-bubble strong{font-weight:700;color:#fff}.message-bubble em{font-style:italic}.message-bubble h1,.message-bubble h2,.message-bubble h3{color:#fff;line-height:1.3;margin:13px 0 7px}.message-bubble h1{font-size:17px}.message-bubble h2{font-size:15px}.message-bubble h3{font-size:14px}.message-bubble ul,.message-bubble ol{margin:6px 0 9px 20px;padding:0}.message-bubble li{margin:3px 0}.message-bubble code{padding:2px 5px;border-radius:5px;background:#ffffff12;font-family:Consolas,monospace;font-size:.92em}.message-bubble pre{margin:9px 0;padding:10px 12px;border-radius:9px;background:#00000045;overflow:auto}.message-bubble pre code{padding:0;background:transparent}.message-bubble blockquote{margin:9px 0;padding-left:12px;border-left:2px solid #a855f777;color:#bbb3c5}.message-bubble hr{border:0;border-top:1px solid #ffffff12;margin:12px 0}.chat-composer-wrap{position:fixed;left:250px;right:0;bottom:0;z-index:20;padding:18px 35px 24px;background:linear-gradient(to top,#08060d 65%,transparent)}.chat-composer{max-width:900px;margin:auto;padding:9px;border:1px solid #ffffff1a;border-radius:17px;background:#120e1af5}.composer-row{display:flex;gap:9px;align-items:flex-end}.chat-input{flex:1;min-height:42px;max-height:140px;resize:none;border:0;outline:0;padding:11px 10px;background:transparent;color:#fff}.attach-btn,.send-btn{width:42px;height:42px;flex:0 0 42px;border-radius:12px}.attach-btn{border:1px solid #ffffff12;background:#120c1d;color:#ddd;cursor:pointer}.send-btn{cursor:pointer}.send-btn:disabled{opacity:.45}.attachment-bar{display:none;align-items:center;justify-content:space-between;margin-bottom:8px;padding:8px 10px;border:1px solid #a855f733;border-radius:10px;background:#7c3aed12;color:#d8c9ff;font-size:11px}.remove-file{border:0;background:none;color:#aaa;cursor:pointer}.attach-panel{display:none;margin-bottom:9px;padding:11px;border:1px solid #a855f733;border-radius:12px;background:#100b1b}.attach-panel.open{display:block}.attach-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.panel-upload{border:1px solid #a855f744;background:#7c3aed22;color:#ddd;border-radius:8px;padding:7px 10px;cursor:pointer;font-size:11px}.existing-files{display:flex;gap:7px;flex-wrap:wrap;max-height:110px;overflow:auto}.existing-file{border:1px solid #ffffff12;background:#ffffff08;color:#ccc;border-radius:8px;padding:7px 9px;cursor:pointer;font-size:10px;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.panel-msg{font-size:10px;color:#77717e;margin-top:8px}.history-view,.files-view{overflow:auto;padding:35px}.section-head{margin-bottom:25px}.section-head h2{font-size:24px;margin-bottom:7px}.history-list,.file-list{display:flex;flex-direction:column;gap:10px}.history-item,.file-item{border:1px solid #ffffff13;border-radius:14px;background:#120e1a99}.history-item{padding:17px 19px;cursor:pointer}.history-title{font-size:13px;font-weight:600;margin-bottom:6px}.history-date,.file-meta{font-size:10px;color:#706a77}.files-header{display:flex;justify-content:space-between;gap:20px;margin-bottom:25px}.upload-btn{padding:11px 17px;border-radius:11px;cursor:pointer;white-space:nowrap}.upload-area{border:1px dashed #a855f744;border-radius:16px;padding:35px 20px;text-align:center;background:#7c3aed09;margin-bottom:15px;cursor:pointer}.upload-icon{width:46px;height:46px;margin:0 auto 12px;border-radius:14px;background:#8b5cf622;display:flex;align-items:center;justify-content:center;font-size:21px}.upload-area h3{font-size:14px;margin-bottom:6px}.upload-area p{font-size:11px;color:#746e7b}.file-status{min-height:18px;font-size:11px;color:#918b9e;margin-bottom:10px}.file-item{display:flex;align-items:center;gap:13px;padding:15px 17px}.file-icon{width:40px;height:40px;flex:0 0 40px;border-radius:11px;background:#8b5cf622}.file-info{flex:1;min-width:0}.file-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.file-meta{margin-top:5px}.file-actions{display:flex;gap:7px}.file-action{width:34px;height:34px;border:1px solid #ffffff12;border-radius:9px;background:#ffffff05;color:#aaa;cursor:pointer}.empty{padding:60px;text-align:center;color:#77717e;font-size:13px}.hidden{display:none!important}@media(max-width:800px){.sidebar{width:70px;padding:18px 10px}.brand-name,.section-title,.nav-item span:not(.nav-icon),.new-chat,.user-info{display:none}.brand,.nav-item,.user-card{justify-content:center}.cards{grid-template-columns:1fr}.dashboard{padding:35px 20px}.chat-composer-wrap{left:70px;padding:12px 15px 18px}.chat-messages{padding:22px 20px 120px}.history-view,.files-view{padding:25px 20px}.files-header{flex-direction:column}.upload-btn{width:100%}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="brand-icon">S</div><div class="brand-name">SurwiAI</div></div>
+<button class="new-chat" id="newChatBtn">+ New chat</button>
+<div class="section-title">Workspace</div>
+<div class="nav-item active" id="dashboardNav"><span class="nav-icon">⌂</span><span>Dashboard</span></div>
+<div class="nav-item" id="aiNav"><span class="nav-icon">✦</span><span>AI Assistant</span></div>
+<div class="nav-item" id="filesNav"><span class="nav-icon">◫</span><span>Files</span></div>
+<div class="nav-item" id="historyNav"><span class="nav-icon">◷</span><span>History</span></div>
+<div class="sidebar-bottom"><div class="nav-item"><span class="nav-icon">⚙</span><span>Settings</span></div><div class="user-card"><div class="avatar" id="avatar">S</div><div class="user-info"><div class="user-name" id="userName">Surwi User</div><div class="user-email" id="userEmail"></div></div></div><button class="logout-btn" id="logoutBtn">↪ &nbsp; Logout</button></div>
+</aside>
+<main class="main">
+<header class="topbar"><div class="page-title" id="pageTitle">Dashboard</div><div class="status"><span class="status-dot"></span>Surwi AI online</div></header>
+<section class="dashboard view" id="dashboardView" style="display:block"><div class="hero"><div class="welcome"><div class="welcome-badge">✦ Your AI workspace</div><h1 id="welcomeTitle">Welcome to Surwi</h1><p>Your intelligent workspace for thinking, creating and getting things done.</p></div><div class="cards"><div class="card" id="aiCard"><div class="card-icon">✦</div><h3>AI Assistant</h3><p>Ask questions, solve problems, write and brainstorm with Surwi.</p></div><div class="card" id="filesCard"><div class="card-icon">⌁</div><h3>Upload Files</h3><p>Bring your documents and let Surwi understand and work with them.</p></div><div class="card"><div class="card-icon">⚡</div><h3>Smart Tools</h3><p>Powerful AI tools designed to help you work faster.</p></div></div></div></section>
+<section class="chat-view view" id="chatView"><div class="chat-messages" id="chatMessages"><div class="chat-inner" id="chatInner"><div class="chat-empty" id="chatEmpty"><div><h2>How can I help?</h2><p>Ask Surwi anything and start a conversation.</p></div></div></div></div></section>
+<section class="history-view view" id="historyView"><div class="history-inner"><div class="section-head"><h2>Chat History</h2><p>Your previous conversations</p></div><div class="history-list" id="historyList"><div class="empty">Loading conversations...</div></div></div></section>
+<section class="files-view view" id="filesView"><div class="files-inner"><div class="files-header"><div class="section-head"><h2>Files</h2><p>Upload and manage your documents</p></div><button class="upload-btn" id="uploadBtn">+ Upload file</button></div><input type="file" id="filesPageInput" class="file-input-accessible" accept=".pdf,.txt,.doc,.docx,.csv,.xlsx,.xls,.ppt,.pptx,.png,.jpg,.jpeg,.webp"><label class="upload-area" id="uploadArea" for="filesPageInput"><div class="upload-icon">↑</div><h3>Drop a file here or click to upload</h3><p>Select a document from your computer</p></label><div class="file-status" id="fileStatus"></div><div class="file-list" id="fileList"></div></div></section>
+<div class="chat-composer-wrap" id="composerWrap" style="display:none"><form class="chat-composer" id="chatForm"><div class="attachment-bar" id="attachmentBar"><span id="attachmentName"></span><button class="remove-file" id="removeAttachedFile" type="button">×</button></div><div class="attach-panel" id="attachPanel"><div class="attach-head"><b style="font-size:12px">Attach a file</b><button class="panel-upload" id="chatUploadBtn" type="button">+ Upload new</button></div><input class="hidden" type="file" id="chatFileInput" accept=".pdf,.txt,.doc,.docx,.csv,.xlsx,.xls,.ppt,.pptx,.png,.jpg,.jpeg,.webp"><div class="existing-files" id="existingFiles"></div><div class="panel-msg" id="attachPanelMessage">Loading files...</div></div><div class="composer-row"><button class="attach-btn" id="attachBtn" type="button" aria-label="Attach a file" aria-expanded="false">📎</button><textarea class="chat-input" id="chatInput" rows="1" placeholder="Message Surwi..." autocomplete="off"></textarea><button class="send-btn" id="sendBtn" type="submit">↑</button></div></form></div>
+</main></div>
+<script>
+"use strict";
+const token=localStorage.getItem("surwi_access_token")||localStorage.getItem("access_token")||localStorage.getItem("surwi_token")||localStorage.getItem("token")||"";
+const storedUser=localStorage.getItem("surwi_user");
+if(!token||!storedUser){window.location.replace("/");throw new Error("Authentication required")}
+let user={};try{user=JSON.parse(storedUser)}catch(e){}
+const $=id=>document.getElementById(id);
+$("userName").textContent=user.name||"Surwi User";$("userEmail").textContent=user.email||"";$("welcomeTitle").textContent=`Welcome back, ${user.name||"there"}`;$("avatar").textContent=(user.name||"S")[0].toUpperCase();
+const dashboardView=$("dashboardView"),chatView=$("chatView"),historyView=$("historyView"),filesView=$("filesView"),composerWrap=$("composerWrap"),chatMessages=$("chatMessages"),chatInner=$("chatInner"),chatForm=$("chatForm"),chatInput=$("chatInput"),sendBtn=$("sendBtn"),attachBtn=$("attachBtn"),attachPanel=$("attachPanel"),existingFiles=$("existingFiles"),attachPanelMessage=$("attachPanelMessage"),chatUploadBtn=$("chatUploadBtn"),chatFileInput=$("chatFileInput"),attachmentBar=$("attachmentBar"),attachmentName=$("attachmentName"),removeAttachedFile=$("removeAttachedFile"),filesPageInput=$("filesPageInput"),uploadBtn=$("uploadBtn"),uploadArea=$("uploadArea"),fileList=$("fileList"),fileStatus=$("fileStatus"),historyList=$("historyList"),pageTitle=$("pageTitle");
+let currentConversationId=null,selectedFileId=null,selectedFileName=null;
+const auth=()=>({Authorization:`Bearer ${token}`});const jsonAuth=()=>({Authorization:`Bearer ${token}`,"Content-Type":"application/json"});
+function hide(){dashboardView.style.display="none";chatView.style.display="none";historyView.style.display="none";filesView.style.display="none";composerWrap.style.display="none"}
+function nav(x){document.querySelectorAll(".nav-item").forEach(e=>e.classList.remove("active"));x.classList.add("active")}
+function openDashboard(){hide();dashboardView.style.display="block";pageTitle.textContent="Dashboard";nav($("dashboardNav"))}
+function openChat(id=currentConversationId){hide();chatView.style.display="flex";composerWrap.style.display="block";pageTitle.textContent="AI Assistant";nav($("aiNav"));currentConversationId=id;chatInput.focus()}
+async function openHistory(){hide();historyView.style.display="block";pageTitle.textContent="History";nav($("historyNav"));await loadHistory()}
+async function openFiles(){hide();filesView.style.display="block";pageTitle.textContent="Files";nav($("filesNav"));await loadFiles()}
+$("dashboardNav").onclick=openDashboard;$("aiNav").onclick=()=>openChat();$("aiCard").onclick=()=>openChat();$("filesNav").onclick=openFiles;$("filesCard").onclick=openFiles;$("historyNav").onclick=openHistory;
+$("newChatBtn").onclick=()=>{currentConversationId=null;clearAttachment();chatInner.innerHTML='<div class="chat-empty" id="chatEmpty"><div><h2>How can I help?</h2><p>Ask Surwi anything and start a conversation.</p></div></div>';openChat(null)};
+$("logoutBtn").onclick=()=>{try{["surwi_access_token","access_token","surwi_token","token","surwi_user"].forEach(k=>localStorage.removeItem(k));sessionStorage.clear()}finally{window.location.replace("/")}};
+function escapeHtml(value){return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function inlineMarkdown(value){let html=escapeHtml(value);html=html.replace(/`([^`]+)`/g,"<code>$1</code>");html=html.replace(/\*\*([^*\n]+)\*\*/g,"<strong>$1</strong>");html=html.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g,"$1<em>$2</em>");return html}
+function renderMarkdown(markdown){const lines=String(markdown??"").replace(/\r\n/g,"\n").replace(/\r/g,"\n").split("\n");const out=[];let ul=false,ol=false,code=false,codeLines=[];const closeLists=()=>{if(ul){out.push("</ul>");ul=false}if(ol){out.push("</ol>");ol=false}};const closeCode=()=>{if(code){out.push("<pre><code>"+escapeHtml(codeLines.join("\n"))+"</code></pre>");codeLines=[];code=false}};for(const line of lines){const t=line.trim();if(t.startsWith("```")){closeLists();if(code)closeCode();else{code=true;codeLines=[]}continue}if(code){codeLines.push(line);continue}if(!t){closeLists();continue}let m=t.match(/^(#{1,3})\s+(.+)$/);if(m){closeLists();const n=m[1].length;out.push(`<h${n}>${inlineMarkdown(m[2])}</h${n}>`);continue}m=t.match(/^[-*]\s+(.+)$/);if(m){if(ol){out.push("</ol>");ol=false}if(!ul){out.push("<ul>");ul=true}out.push(`<li>${inlineMarkdown(m[1])}</li>`);continue}m=t.match(/^\d+[.)]\s+(.+)$/);if(m){if(ul){out.push("</ul>");ul=false}if(!ol){out.push("<ol>");ol=true}out.push(`<li>${inlineMarkdown(m[1])}</li>`);continue}if(/^---+$/.test(t)){closeLists();out.push("<hr>");continue}if(t.startsWith("> ")){closeLists();out.push(`<blockquote>${inlineMarkdown(t.slice(2))}</blockquote>`);continue}closeLists();out.push(`<p>${inlineMarkdown(t)}</p>`)}closeLists();closeCode();return out.join("")}
+function addMessage(text,type){const empty=$("chatEmpty");if(empty)empty.remove();const row=document.createElement("div");row.className=`message-row ${type}`;const av=document.createElement("div");av.className="message-avatar";av.textContent=type==="user"?(user.name||"S")[0].toUpperCase():"S";const b=document.createElement("div");b.className="message-bubble";b.innerHTML=renderMarkdown(text);row.append(av,b);chatInner.appendChild(row);chatMessages.scrollTop=chatMessages.scrollHeight}
+function typing(){const r=document.createElement("div");r.id="typing";r.className="message-row";r.innerHTML='<div class="message-avatar">S</div><div class="message-bubble">Surwi is thinking...</div>';chatInner.appendChild(r);chatMessages.scrollTop=chatMessages.scrollHeight}
+function clearTyping(){const x=$("typing");if(x)x.remove()}
+function clearAttachment(){selectedFileId=null;selectedFileName=null;attachmentName.textContent="";attachmentBar.style.display="none";chatFileInput.value=""}
+function setAttachment(id,name){selectedFileId=Number(id);selectedFileName=name;attachmentName.textContent=`📄 ${name}`;attachmentBar.style.display="flex";attachPanel.classList.remove("open");attachBtn.setAttribute("aria-expanded","false")}
+attachBtn.onclick=async()=>{const open=attachPanel.classList.toggle("open");attachBtn.setAttribute("aria-expanded",String(open));if(open)await loadChatFiles()};removeAttachedFile.onclick=clearAttachment;chatUploadBtn.onclick=()=>chatFileInput.click();chatFileInput.onchange=async()=>{if(chatFileInput.files[0])await uploadChatFile(chatFileInput.files[0])};
+async function loadChatFiles(){attachPanelMessage.textContent="Loading files...";existingFiles.innerHTML="";try{const r=await fetch("/files",{headers:auth()});const d=await r.json();if(!r.ok){attachPanelMessage.textContent=d.detail||"Unable to load files.";return}if(!d.files?.length){attachPanelMessage.textContent="No uploaded files. Click '+ Upload new'.";return}d.files.forEach(f=>{const b=document.createElement("button");b.type="button";b.className="existing-file";b.textContent=f.original_name||f.name||`File ${f.id}`;b.onclick=()=>setAttachment(f.id,f.original_name||f.name||`File ${f.id}`);existingFiles.appendChild(b)});attachPanelMessage.textContent=`${d.files.length} file(s) available.`}catch(e){attachPanelMessage.textContent="Backend se connection nahi ho raha."}}
+async function uploadChatFile(file){attachPanelMessage.textContent=`Uploading ${file.name}...`;const fd=new FormData();fd.append("file",file);try{const r=await fetch("/files/upload",{method:"POST",headers:auth(),body:fd});const d=await r.json();if(!r.ok)throw new Error(d.detail||"Upload failed");setAttachment(d.file.id,d.file.original_name||d.file.name||file.name);chatFileInput.value=""}catch(e){attachPanelMessage.textContent=e.message}}
+chatInput.oninput=()=>{chatInput.style.height="auto";chatInput.style.height=Math.min(chatInput.scrollHeight,140)+"px"};chatInput.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();chatForm.requestSubmit()}};
+chatForm.onsubmit=async e=>{e.preventDefault();const message=chatInput.value.trim();if(!message||sendBtn.disabled)return;addMessage(message,"user");chatInput.value="";sendBtn.disabled=true;typing();try{const r=await fetch("/chat/message",{method:"POST",headers:jsonAuth(),body:JSON.stringify({message,conversation_id:currentConversationId,file_id:selectedFileId})});const d=await r.json();clearTyping();if(!r.ok){addMessage(d.detail||`API error: ${r.status}`,"assistant");return}currentConversationId=d.conversation_id??currentConversationId;addMessage(d.message||"Empty response","assistant");clearAttachment();loadHistory(true)}catch(e){clearTyping();addMessage("Backend se connection nahi ho raha. Check karo FastAPI server running hai.","assistant")}finally{sendBtn.disabled=false;chatInput.focus()}};
+async function loadHistory(silent=false){if(!silent)historyList.innerHTML='<div class="empty">Loading conversations...</div>';try{const r=await fetch("/chat/conversations",{headers:auth()});const d=await r.json();if(!r.ok){historyList.textContent="";const er=document.createElement("div");er.className="empty";er.textContent=d.detail||"Unable to load history.";historyList.appendChild(er);return}if(!d.conversations?.length){historyList.innerHTML='<div class="empty">No conversations yet.</div>';return}historyList.innerHTML="";d.conversations.forEach(c=>{const x=document.createElement("div");x.className="history-item";x.innerHTML=`<div class="history-title"></div><div class="history-date"></div>`;x.querySelector(".history-title").textContent=c.title||"New Chat";x.querySelector(".history-date").textContent=new Date(c.updated_at||c.created_at).toLocaleString("en-IN");x.onclick=()=>openConversation(c.id);historyList.appendChild(x)})}catch(e){historyList.innerHTML='<div class="empty">Backend se connection nahi ho raha.</div>'}}
+async function openConversation(id){openChat(id);chatInner.innerHTML='<div class="empty">Loading conversation...</div>';try{const r=await fetch(`/chat/conversations/${id}`,{headers:auth()});const d=await r.json();chatInner.innerHTML="";if(!r.ok){addMessage(d.detail||"Unable to load conversation.","assistant");return}if(!d.messages?.length){chatInner.innerHTML='<div class="chat-empty" id="chatEmpty"><div><h2>No messages</h2><p>This conversation is empty.</p></div></div>';return}d.messages.forEach(m=>addMessage(m.content,m.role==="user"?"user":"assistant"))}catch(e){chatInner.innerHTML="";addMessage("Backend se connection nahi ho raha.","assistant")}}
+async function loadFiles(){
+  fileList.innerHTML='<div class="empty">Loading files...</div>';
+  try{
+    const r=await fetch("/files",{headers:auth()});
+    const d=await r.json();
+    if(!r.ok){
+      fileList.innerHTML='';
+      const er=document.createElement("div");er.className="empty";er.textContent=d.detail||"Unable to load files.";fileList.appendChild(er);return;
+    }
+    if(!d.files?.length){fileList.innerHTML='<div class="empty">No files uploaded yet.</div>';return}
+    fileList.innerHTML="";
+    d.files.forEach(f=>{
+      const x=document.createElement("div");x.className="file-item";
+      const ext=(f.original_name||"").split(".").pop().toLowerCase();
+      const icon=["png","jpg","jpeg","webp","gif"].includes(ext)?"🖼️":ext==="pdf"?"📕":"📄";
+      x.innerHTML='<div class="file-icon"></div><div class="file-info"><div class="file-name"></div><div class="file-meta"></div></div><div class="file-actions"><button type="button" class="file-action" title="Preview" aria-label="Preview">👁</button><button type="button" class="file-action" title="Download" aria-label="Download">↓</button><button type="button" class="file-action" title="Delete" aria-label="Delete">×</button></div>';
+      x.querySelector(".file-icon").textContent=icon;
+      x.querySelector(".file-name").textContent=f.original_name||f.name||`File ${f.id}`;
+      x.querySelector(".file-meta").textContent=`${Math.max(1,Math.round((f.file_size||0)/1024))} KB • ${new Date(f.created_at).toLocaleString("en-IN")}`;
+      const actions=x.querySelectorAll(".file-action");
+      actions[0].onclick=()=>previewFile(f.id,f.original_name||f.name||"file");
+      actions[1].onclick=()=>downloadFile(f.id,f.original_name||f.name||"download");
+      actions[2].onclick=()=>deleteFile(f.id);
+      fileList.appendChild(x);
+    });
+  }catch(e){fileList.innerHTML='<div class="empty">Backend se connection nahi ho raha.</div>'}
+}
+
+async function uploadFile(file){
+  if(!file)return;
+  fileStatus.textContent=`Uploading ${file.name}...`;
+  const fd=new FormData();fd.append("file",file);
+  try{
+    const r=await fetch("/files/upload",{method:"POST",headers:auth(),body:fd});
+    let d={};try{d=await r.json()}catch(_){ }
+    if(!r.ok)throw new Error(d.detail||`Upload failed (${r.status})`);
+    fileStatus.textContent=`✓ File uploaded successfully: ${file.name}`;
+    await loadFiles();
+  }catch(e){fileStatus.textContent=`✕ ${e.message}`}
+}
+
+async function previewFile(id,name){
+  try{
+    fileStatus.textContent=`Opening ${name}...`;
+    const r=await fetch(`/files/${id}/preview`,{headers:auth()});
+    if(!r.ok){
+      let d={};try{d=await r.json()}catch(_){ }
+      if(r.status===415){fileStatus.textContent="This file type cannot be previewed. Use Download.";return}
+      throw new Error(d.detail||"Preview failed");
+    }
+    const blob=await r.blob();
+    const url=URL.createObjectURL(blob);
+    const win=window.open(url,"_blank","noopener,noreferrer");
+    if(!win){
+      const a=document.createElement("a");a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.click();
+    }
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+    fileStatus.textContent=`Preview opened: ${name}`;
+  }catch(e){fileStatus.textContent=`✕ ${e.message}`}
+}
+
+async function downloadFile(id,name){
+  try{
+    fileStatus.textContent=`Preparing ${name}...`;
+    const r=await fetch(`/files/${id}/download`,{headers:auth()});
+    if(!r.ok){let d={};try{d=await r.json()}catch(_){ }throw new Error(d.detail||"Download failed")}
+    const blob=await r.blob();
+    const a=document.createElement("a");const url=URL.createObjectURL(blob);a.href=url;a.download=name||"download";document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    fileStatus.textContent=`✓ Download started: ${name}`;
+  }catch(e){fileStatus.textContent=`✕ ${e.message}`}
+}
+
+async function deleteFile(id){
+  if(!confirm("Delete this file?"))return;
+  try{
+    const r=await fetch(`/files/${id}`,{method:"DELETE",headers:auth()});
+    const d=await r.json();if(!r.ok)throw new Error(d.detail||"Delete failed");
+    if(selectedFileId===Number(id))clearAttachment();
+    await loadFiles();
+    if(attachPanel.classList.contains("open"))await loadChatFiles();
+    fileStatus.textContent="✓ File deleted successfully.";
+  }catch(e){fileStatus.textContent=`✕ ${e.message}`}
+}
+
+// The <label for=file> handles normal clicks reliably. Keep the explicit
+// handlers too for browsers/extensions that interfere with label activation.
+uploadBtn.addEventListener("click",e=>{e.preventDefault();filesPageInput.click()});
+uploadArea.addEventListener("click",e=>{if(e.target.closest("button"))return;filesPageInput.click()});
+filesPageInput.addEventListener("change",async()=>{const file=filesPageInput.files?.[0];if(file){await uploadFile(file);filesPageInput.value=""}});
+uploadArea.addEventListener("dragover",e=>{e.preventDefault();uploadArea.classList.add("dragging")});
+uploadArea.addEventListener("dragleave",()=>uploadArea.classList.remove("dragging"));
+uploadArea.addEventListener("drop",async e=>{e.preventDefault();uploadArea.classList.remove("dragging");const file=e.dataTransfer?.files?.[0];if(file)await uploadFile(file)});
+
+loadHistory(true);
+</script>
+</body></html>
