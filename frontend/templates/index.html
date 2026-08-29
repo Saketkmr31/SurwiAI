@@ -12,7 +12,6 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
-
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
     <style>
@@ -395,106 +394,94 @@
         </div>
 
 
-        <!-- LOGIN CARD -->
+        <!-- AUTH CARD -->
 
         <section class="card">
 
-            <h2>
-                Welcome back
-            </h2>
+            <div id="loginPanel">
 
-            <p class="subtitle">
-                Sign in to continue to Surwi.
-            </p>
+                <h2>Welcome back</h2>
 
+                <p class="subtitle">
+                    Sign in to continue to Surwi.
+                </p>
 
-            <!-- LOGIN MESSAGE -->
+                <div id="message" class="message"></div>
 
-            <div
-                id="message"
-                class="message"
-            ></div>
-
-
-            <!-- GOOGLE -->
-
-            <button
-                class="google-btn"
-                id="googleBtn"
-                type="button"
-            >
-
-                <span class="google-icon">
-                    G
-                </span>
-
-                Continue with Google
-
-            </button>
-
-
-            <!-- DIVIDER -->
-
-            <div class="divider">
-                OR
-            </div>
-
-
-            <!-- LOGIN FORM -->
-
-            <form id="loginForm">
-
-                <label for="email">
-                    Email address
-                </label>
-
-                <input
-                    class="input"
-                    id="email"
-                    type="email"
-                    placeholder="you@example.com"
-                    autocomplete="email"
-                    required
-                >
-
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    class="input"
-                    id="password"
-                    type="password"
-                    placeholder="••••••••"
-                    autocomplete="current-password"
-                    required
-                >
-
-
-                <button
-                    class="login-btn"
-                    id="loginBtn"
-                    type="submit"
-                >
-                    Sign in to Surwi
+                <button class="google-btn" id="googleBtn" type="button">
+                    <span class="google-icon">G</span>
+                    Continue with Google
                 </button>
 
-            </form>
+                <div class="divider">OR</div>
 
+                <form id="loginForm">
 
-            <!-- SIGNUP -->
+                    <label for="email">Email address</label>
+                    <input class="input" id="email" type="email"
+                           placeholder="you@example.com"
+                           autocomplete="email" required>
 
-            <div class="signup">
+                    <label for="password">Password</label>
+                    <input class="input" id="password" type="password"
+                           placeholder="••••••••"
+                           autocomplete="current-password" required>
 
-                Don't have an account?
+                    <button class="login-btn" id="loginBtn" type="submit">
+                        Sign in to Surwi
+                    </button>
 
-                <a
-                    href="#"
-                    id="signupLink"
-                >
-                    Create account
-                </a>
+                </form>
+
+                <div class="signup">
+                    Don't have an account?
+                    <a href="#" id="signupLink">Create account</a>
+                </div>
+
+            </div>
+
+            <div id="signupPanel" style="display:none;">
+
+                <h2>Create your account</h2>
+
+                <p class="subtitle">
+                    Join Surwi and create your personal AI workspace.
+                </p>
+
+                <div id="signupMessage" class="message"></div>
+
+                <form id="signupForm">
+
+                    <label for="signupName">Full name</label>
+                    <input class="input" id="signupName" type="text"
+                           placeholder="Your name"
+                           autocomplete="name" minlength="2" required>
+
+                    <label for="signupEmail">Email address</label>
+                    <input class="input" id="signupEmail" type="email"
+                           placeholder="you@example.com"
+                           autocomplete="email" required>
+
+                    <label for="signupPassword">Password</label>
+                    <input class="input" id="signupPassword" type="password"
+                           placeholder="Minimum 8 characters"
+                           autocomplete="new-password" minlength="8" required>
+
+                    <label for="signupConfirmPassword">Confirm password</label>
+                    <input class="input" id="signupConfirmPassword" type="password"
+                           placeholder="Re-enter your password"
+                           autocomplete="new-password" minlength="8" required>
+
+                    <button class="login-btn" id="signupBtn" type="submit">
+                        Create account
+                    </button>
+
+                </form>
+
+                <div class="signup">
+                    Already have an account?
+                    <a href="#" id="backToLoginLink">Sign in</a>
+                </div>
 
             </div>
 
@@ -514,586 +501,451 @@
 
     <script>
 
-        const loginForm =
-            document.getElementById("loginForm");
+        const loginPanel = document.getElementById("loginPanel");
+        const signupPanel = document.getElementById("signupPanel");
 
-        const loginBtn =
-            document.getElementById("loginBtn");
+        const loginForm = document.getElementById("loginForm");
+        const loginBtn = document.getElementById("loginBtn");
+        const googleBtn = document.getElementById("googleBtn");
+        const message = document.getElementById("message");
+        const signupLink = document.getElementById("signupLink");
 
-        const googleBtn =
-            document.getElementById("googleBtn");
-
-        const message =
-            document.getElementById("message");
-
-        const signupLink =
-            document.getElementById("signupLink");
+        const signupForm = document.getElementById("signupForm");
+        const signupBtn = document.getElementById("signupBtn");
+        const signupMessage = document.getElementById("signupMessage");
+        const backToLoginLink =
+            document.getElementById("backToLoginLink");
 
 
-        /*
-         * If already logged in,
-         * don't show login page again.
-         */
-
+        // If already logged in, go directly to dashboard.
         const existingToken =
             localStorage.getItem("surwi_access_token");
 
         const existingUser =
             localStorage.getItem("surwi_user");
 
-
         if (existingToken && existingUser) {
-
             window.location.href = "/dashboard";
-
         }
 
-
-        /*
-         * Show message
-         */
 
         function showMessage(text, type) {
-
             message.textContent = text;
-
-            message.className =
-                "message " + type;
-
+            message.className = "message " + type;
         }
 
 
-        /*
-         * LOGIN
-         */
-
-        loginForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-
-
-                const email =
-                    document
-                        .getElementById("email")
-                        .value
-                        .trim();
-
-                const password =
-                    document
-                        .getElementById("password")
-                        .value;
-
-
-                if (!email || !password) {
-
-                    showMessage(
-                        "Please enter your email and password.",
-                        "error"
-                    );
-
-                    return;
-                }
-
-
-                loginBtn.disabled = true;
-
-                loginBtn.textContent =
-                    "Signing in...";
-
-
-                try {
-
-                    const response =
-                        await fetch(
-                            "/auth/login",
-                            {
-                                method: "POST",
-
-                                headers: {
-                                    "Content-Type":
-                                        "application/json"
-                                },
-
-                                body: JSON.stringify({
-                                    email: email,
-                                    password: password
-                                })
-                            }
-                        );
-
-
-                    const data =
-                        await response.json();
-
-
-                    /*
-                     * Backend error
-                     */
-
-                    if (!response.ok) {
-
-                        throw new Error(
-                            data.detail ||
-                            "Login failed."
-                        );
-
-                    }
-
-
-                    /*
-                     * Save JWT
-                     */
-
-                    localStorage.setItem(
-                        "surwi_access_token",
-                        data.access_token
-                    );
-
-
-                    /*
-                     * Save user information
-                     */
-
-                    localStorage.setItem(
-                        "surwi_user",
-                        JSON.stringify(data.user)
-                    );
-
-
-                    /*
-                     * Success
-                     */
-
-                    showMessage(
-                        "Authentication successful. Opening Surwi...",
-                        "success"
-                    );
-
-
-                    loginBtn.textContent =
-                        "Welcome to Surwi";
-
-
-                    /*
-                     * Redirect
-                     */
-
-                    setTimeout(
-                        function () {
-
-                            window.location.href =
-                                "/dashboard";
-
-                        },
-                        500
-                    );
-
-
-                } catch (error) {
-
-                    console.error(
-                        "Login error:",
-                        error
-                    );
-
-
-                    showMessage(
-                        error.message ||
-                        "Unable to sign in.",
-                        "error"
-                    );
-
-
-                    loginBtn.disabled = false;
-
-                    loginBtn.textContent =
-                        "Sign in to Surwi";
-
-                }
-
-            }
-        );
-
-
-        /*
-         * GOOGLE LOGIN
-         *
-         * Google Identity Services returns a signed ID token.
-         * The backend verifies that token before issuing the normal Surwi JWT.
-         */
-
-        let googleEnabled = false;
-        let googleClientId = "";
-        let googleCsrfToken = "";
-
-        function finishGoogleLogin(data) {
-            localStorage.setItem("surwi_access_token", data.access_token);
-            localStorage.setItem("surwi_user", JSON.stringify(data.user));
-            showMessage("Google authentication successful. Opening Surwi...", "success");
-            googleBtn.disabled = true;
-            googleBtn.textContent = "Signed in with Google";
-            setTimeout(() => { window.location.href = "/dashboard"; }, 400);
+        function showSignupMessage(text, type) {
+            signupMessage.textContent = text;
+            signupMessage.className = "message " + type;
         }
 
-        async function handleGoogleCredential(response) {
-            if (!response || !response.credential) {
-                showMessage("Google did not return a valid credential.", "error");
-                return;
-            }
 
-            googleBtn.disabled = true;
-            googleBtn.textContent = "Signing in with Google...";
+        // Open signup screen.
+        signupLink.addEventListener("click", function (event) {
 
-            try {
-                const r = await fetch("/auth/google/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "same-origin",
-                    body: JSON.stringify({
-                        credential: response.credential,
-                        csrf_token: googleCsrfToken
-                    })
-                });
-                const data = await r.json();
-                if (!r.ok) throw new Error(data.detail || "Google login failed.");
-                finishGoogleLogin(data);
-            } catch (error) {
-                console.error("Google login error:", error);
-                showMessage(error.message || "Unable to sign in with Google.", "error");
-                googleBtn.disabled = false;
-                googleBtn.textContent = "Continue with Google";
-            }
-        }
+            event.preventDefault();
 
-        async function setupGoogleLogin() {
-            try {
-                const r = await fetch("/auth/google/config", { credentials: "same-origin" });
-                const config = await r.json();
-                googleEnabled = !!config.enabled;
-                googleClientId = config.client_id || "";
-                googleCsrfToken = config.csrf_token || "";
+            message.textContent = "";
+            message.className = "message";
 
-                if (!googleEnabled || !googleClientId) {
-                    googleBtn.title = "Google login is not configured on the server.";
-                    return;
-                }
+            loginPanel.style.display = "none";
+            signupPanel.style.display = "block";
 
-                const waitForGIS = () => {
-                    if (!window.google || !google.accounts || !google.accounts.id) {
-                        setTimeout(waitForGIS, 100);
-                        return;
-                    }
-                    google.accounts.id.initialize({
-                        client_id: googleClientId,
-                        callback: handleGoogleCredential,
-                        auto_select: false,
-                        cancel_on_tap_outside: true
-                    });
-                };
-                waitForGIS();
-            } catch (error) {
-                console.error("Google setup error:", error);
-            }
-        }
+            document.getElementById("signupName").focus();
 
-        googleBtn.addEventListener("click", function () {
-            if (!googleEnabled || !googleClientId) {
-                showMessage("Google login is not configured yet. Add GOOGLE_CLIENT_ID on the server.", "error");
-                return;
-            }
-            if (!window.google || !google.accounts || !google.accounts.id) {
-                showMessage("Google Sign-In is still loading. Please try again.", "error");
-                return;
-            }
-            google.accounts.id.prompt();
         });
 
-        setupGoogleLogin();
+
+        // Return to login screen.
+        backToLoginLink.addEventListener("click", function (event) {
+
+            event.preventDefault();
+
+            signupMessage.textContent = "";
+            signupMessage.className = "message";
+
+            signupPanel.style.display = "none";
+            loginPanel.style.display = "block";
+
+            document.getElementById("email").focus();
+
+        });
+
+
+        // LOGIN
+        loginForm.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            if (!email || !password) {
+                showMessage(
+                    "Please enter your email and password.",
+                    "error"
+                );
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Signing in...";
+
+            try {
+
+                const response = await fetch("/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.detail || "Login failed."
+                    );
+                }
+
+                localStorage.setItem(
+                    "surwi_access_token",
+                    data.access_token
+                );
+
+                localStorage.setItem(
+                    "surwi_user",
+                    JSON.stringify(data.user)
+                );
+
+                showMessage(
+                    "Authentication successful. Opening Surwi...",
+                    "success"
+                );
+
+                loginBtn.textContent = "Welcome to Surwi";
+
+                setTimeout(function () {
+                    window.location.href = "/dashboard";
+                }, 500);
+
+            } catch (error) {
+
+                console.error("Login error:", error);
+
+                showMessage(
+                    error.message || "Unable to sign in.",
+                    "error"
+                );
+
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Sign in to Surwi";
+            }
+
+        });
+
+
+        // SIGNUP
+        signupForm.addEventListener("submit", async function (event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("signupName").value.trim();
+
+            const email =
+                document.getElementById("signupEmail").value.trim();
+
+            const password =
+                document.getElementById("signupPassword").value;
+
+            const confirmPassword =
+                document.getElementById(
+                    "signupConfirmPassword"
+                ).value;
+
+            if (!name || !email || !password || !confirmPassword) {
+                showSignupMessage(
+                    "Please fill in all fields.",
+                    "error"
+                );
+                return;
+            }
+
+            if (name.length < 2) {
+                showSignupMessage(
+                    "Name must be at least 2 characters.",
+                    "error"
+                );
+                return;
+            }
+
+            if (password.length < 8) {
+                showSignupMessage(
+                    "Password must be at least 8 characters.",
+                    "error"
+                );
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showSignupMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+                return;
+            }
+
+            signupBtn.disabled = true;
+            signupBtn.textContent = "Creating account...";
+
+            try {
+
+                // 1. Create account.
+                const signupResponse = await fetch("/auth/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const signupData = await signupResponse.json();
+
+                if (!signupResponse.ok) {
+                    throw new Error(
+                        signupData.detail ||
+                        "Account creation failed."
+                    );
+                }
+
+                // 2. Automatically log the new user in.
+                signupBtn.textContent = "Signing in...";
+
+                const loginResponse = await fetch("/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                const loginData = await loginResponse.json();
+
+                if (!loginResponse.ok) {
+                    throw new Error(
+                        loginData.detail ||
+                        "Account created, but automatic login failed."
+                    );
+                }
+
+                localStorage.setItem(
+                    "surwi_access_token",
+                    loginData.access_token
+                );
+
+                localStorage.setItem(
+                    "surwi_user",
+                    JSON.stringify(loginData.user)
+                );
+
+                showSignupMessage(
+                    "Account created successfully. Opening Surwi...",
+                    "success"
+                );
+
+                signupBtn.textContent = "Welcome to Surwi";
+
+                setTimeout(function () {
+                    window.location.href = "/dashboard";
+                }, 700);
+
+            } catch (error) {
+
+                console.error("Signup error:", error);
+
+                showSignupMessage(
+                    error.message ||
+                    "Unable to create your account.",
+                    "error"
+                );
+
+                signupBtn.disabled = false;
+                signupBtn.textContent = "Create account";
+            }
+
+        });
 
 
         /*
-         * SIGNUP
-         *
-         * Signup UI will be added next.
-         */
+            * GOOGLE LOGIN
+            *
+            * Google Identity Services returns a signed ID token.
+            * The backend verifies that token before issuing the normal Surwi JWT.
+            */
 
-        signupLink.addEventListener(
-            "click",
-            function (event) {
+            let googleEnabled = false;
+            let googleClientId = "";
+            let googleCsrfToken = "";
 
-                event.preventDefault();
+            function finishGoogleLogin(data) {
+                localStorage.setItem("surwi_access_token", data.access_token);
+                localStorage.setItem("surwi_user", JSON.stringify(data.user));
 
-                const card = document.querySelector(".card");
+                showMessage(
+                    "Google authentication successful. Opening Surwi...",
+                    "success"
+                );
 
-                card.innerHTML = `
-                    <h2>Create your account</h2>
+                googleBtn.disabled = true;
+                googleBtn.textContent = "Signed in with Google";
 
-                    <p class="subtitle">
-                        Create an account to start using Surwi.
-                    </p>
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 400);
+            }
 
-                    <div id="signupMessage" class="message"></div>
-
-                    <form id="signupForm">
-
-                        <label for="signupName">
-                            Full name
-                        </label>
-
-                        <input
-                            class="input"
-                            id="signupName"
-                            type="text"
-                            placeholder="Your name"
-                            autocomplete="name"
-                            required
-                        >
-
-                        <label for="signupEmail">
-                            Email address
-                        </label>
-
-                        <input
-                            class="input"
-                            id="signupEmail"
-                            type="email"
-                            placeholder="you@example.com"
-                            autocomplete="email"
-                            required
-                        >
-
-                        <label for="signupPassword">
-                            Password
-                        </label>
-
-                        <input
-                            class="input"
-                            id="signupPassword"
-                            type="password"
-                            placeholder="Minimum 8 characters"
-                            autocomplete="new-password"
-                            minlength="8"
-                            required
-                        >
-
-                        <label for="signupConfirmPassword">
-                            Confirm password
-                        </label>
-
-                        <input
-                            class="input"
-                            id="signupConfirmPassword"
-                            type="password"
-                            placeholder="Re-enter your password"
-                            autocomplete="new-password"
-                            minlength="8"
-                            required
-                        >
-
-                        <button
-                            class="login-btn"
-                            id="signupBtn"
-                            type="submit"
-                        >
-                            Create account
-                        </button>
-
-                    </form>
-
-                    <div class="signup">
-                        Already have an account?
-
-                        <a href="#" id="backToLogin">
-                            Sign in
-                        </a>
-                    </div>
-                `;
-
-                const signupForm =
-                    document.getElementById("signupForm");
-
-                const signupBtn =
-                    document.getElementById("signupBtn");
-
-                const signupMessage =
-                    document.getElementById("signupMessage");
-
-                const backToLogin =
-                    document.getElementById("backToLogin");
-
-
-                function showSignupMessage(text, type) {
-
-                    signupMessage.textContent = text;
-
-                    signupMessage.className =
-                        "message " + type;
+            async function handleGoogleCredential(response) {
+                if (!response || !response.credential) {
+                    showMessage(
+                        "Google did not return a valid credential.",
+                        "error"
+                    );
+                    return;
                 }
 
+                googleBtn.disabled = true;
+                googleBtn.textContent = "Signing in with Google...";
 
-                signupForm.addEventListener(
-                    "submit",
-                    async function (event) {
+                try {
+                    const r = await fetch("/auth/google/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: "same-origin",
+                        body: JSON.stringify({
+                            credential: response.credential,
+                            csrf_token: googleCsrfToken
+                        })
+                    });
 
-                        event.preventDefault();
+                    const data = await r.json();
 
-                        const name =
-                            document
-                                .getElementById("signupName")
-                                .value
-                                .trim();
-
-                        const email =
-                            document
-                                .getElementById("signupEmail")
-                                .value
-                                .trim();
-
-                        const password =
-                            document
-                                .getElementById("signupPassword")
-                                .value;
-
-                        const confirmPassword =
-                            document
-                                .getElementById("signupConfirmPassword")
-                                .value;
-
-
-                        if (name.length < 2) {
-
-                            showSignupMessage(
-                                "Name must be at least 2 characters.",
-                                "error"
-                            );
-
-                            return;
-                        }
-
-
-                        if (password.length < 8) {
-
-                            showSignupMessage(
-                                "Password must be at least 8 characters.",
-                                "error"
-                            );
-
-                            return;
-                        }
-
-
-                        if (password !== confirmPassword) {
-
-                            showSignupMessage(
-                                "Passwords do not match.",
-                                "error"
-                            );
-
-                            return;
-                        }
-
-
-                        signupBtn.disabled = true;
-
-                        signupBtn.textContent =
-                            "Creating account...";
-
-
-                        try {
-
-                            const response =
-                                await fetch(
-                                    "/auth/signup",
-                                    {
-                                        method: "POST",
-
-                                        headers: {
-                                            "Content-Type":
-                                                "application/json"
-                                        },
-
-                                        body: JSON.stringify({
-                                            name: name,
-                                            email: email,
-                                            password: password
-                                        })
-                                    }
-                                );
-
-
-                            const data =
-                                await response.json();
-
-
-                            if (!response.ok) {
-
-                                throw new Error(
-                                    data.detail ||
-                                    "Could not create account."
-                                );
-                            }
-
-
-                            showSignupMessage(
-                                "Account created successfully. You can now sign in.",
-                                "success"
-                            );
-
-
-                            signupBtn.textContent =
-                                "Account created";
-
-
-                            setTimeout(
-                                function () {
-
-                                    window.location.reload();
-
-                                },
-                                1000
-                            );
-
-
-                        } catch (error) {
-
-                            console.error(
-                                "Signup error:",
-                                error
-                            );
-
-
-                            showSignupMessage(
-                                error.message ||
-                                "Unable to create account.",
-                                "error"
-                            );
-
-
-                            signupBtn.disabled = false;
-
-                            signupBtn.textContent =
-                                "Create account";
-                        }
-
+                    if (!r.ok) {
+                        throw new Error(
+                            data.detail || "Google login failed."
+                        );
                     }
-                );
 
+                    finishGoogleLogin(data);
 
-                backToLogin.addEventListener(
-                    "click",
-                    function (event) {
+                } catch (error) {
+                    console.error("Google login error:", error);
 
-                        event.preventDefault();
+                    showMessage(
+                        error.message || "Unable to sign in with Google.",
+                        "error"
+                    );
 
-                        window.location.reload();
-
-                    }
-                );
-
+                    googleBtn.disabled = false;
+                    googleBtn.textContent = "Continue with Google";
+                }
             }
-        );
+
+            async function setupGoogleLogin() {
+                try {
+                    const r = await fetch(
+                        "/auth/google/config",
+                        {
+                            credentials: "same-origin"
+                        }
+                    );
+
+                    const config = await r.json();
+
+                    googleEnabled = !!config.enabled;
+                    googleClientId = config.client_id || "";
+                    googleCsrfToken = config.csrf_token || "";
+
+                    if (!googleEnabled || !googleClientId) {
+                        googleBtn.title =
+                            "Google login is not configured on the server.";
+                        return;
+                    }
+
+                    const waitForGIS = () => {
+                        if (
+                            !window.google ||
+                            !google.accounts ||
+                            !google.accounts.id
+                        ) {
+                            setTimeout(waitForGIS, 100);
+                            return;
+                        }
+
+                        google.accounts.id.initialize({
+                            client_id: googleClientId,
+                            callback: handleGoogleCredential,
+                            auto_select: false,
+                            cancel_on_tap_outside: true
+                        });
+                    };
+
+                    waitForGIS();
+
+                } catch (error) {
+                    console.error(
+                        "Google setup error:",
+                        error
+                    );
+                }
+            }
+
+            googleBtn.addEventListener(
+                "click",
+                function () {
+
+                    if (!googleEnabled || !googleClientId) {
+                        showMessage(
+                            "Google login is not configured yet. Add GOOGLE_CLIENT_ID on the server.",
+                            "error"
+                        );
+                        return;
+                    }
+
+                    if (
+                        !window.google ||
+                        !google.accounts ||
+                        !google.accounts.id
+                    ) {
+                        showMessage(
+                            "Google Sign-In is still loading. Please try again.",
+                            "error"
+                        );
+                        return;
+                    }
+
+                    google.accounts.id.prompt();
+                }
+            );
+
+            setupGoogleLogin();
 
     </script>
 

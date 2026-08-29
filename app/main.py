@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from fastapi import FastAPI
-from fastapi.responses import FileResponse, RedirectResponse
+from fastapi.responses import FileResponse
 
 from .database import init_database
 from .routers.auth import router as auth_router
@@ -11,13 +11,16 @@ from .routers.files import router as files_router
 
 app = FastAPI(title="Surwi AI")
 
-BASE_DIR = Path(__file__).resolve().parents[2]
+# Project root:
+# C:\Users\saket\SurwiAI
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 init_database()
 
 app.include_router(auth_router)
 app.include_router(chat_router)
 app.include_router(files_router)
+
 
 @app.get("/")
 def home():

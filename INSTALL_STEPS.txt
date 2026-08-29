@@ -1,0 +1,57 @@
+SURWI AI — PREMIUM WORKSPACE INSTALL
+====================================
+
+IMPORTANT: This is an upgrade package for the existing SurwiAI project. Do not delete your existing project or database. Make a backup first.
+
+1) Stop the local server (Ctrl+C).
+2) Make a copy of your current SurwiAI folder as a backup.
+3) Extract this ZIP into the EXISTING SurwiAI project root and allow overwrite.
+4) Make sure these paths now exist:
+   app/main.py
+   app/database.py
+   app/security.py
+   app/routers/auth.py
+   app/routers/chat.py
+   app/routers/files.py
+   frontend/templates/index.html
+   frontend/templates/dashboard.html
+   requirements.txt
+5) Keep your existing .env. Do NOT replace it with .env.example.
+6) If dependencies are missing, run:
+   pip install -r requirements.txt
+7) Start locally from the project root:
+   uvicorn app.main:app --reload
+8) Open the local Surwi URL and test:
+   - Login
+   - Create account
+   - AI chat
+   - File upload
+   - History
+   - Daily Tasks
+   - Calendar
+   - Settings
+9) If local testing is good, commit and push:
+   git status
+   git add .
+   git commit -m "Upgrade Surwi workspace UI"
+   git push origin main
+10) Render should auto-deploy from the main branch. Wait for Deploy Live before testing the public URL.
+
+WHAT WAS ADDED
+--------------
+- Premium red + purple dark workspace UI
+- Dashboard quick AI input
+- Daily Tasks: add, complete, delete, priority, due date
+- Calendar: monthly view and events
+- Dashboard task/event summaries
+- Settings modal for display name
+- Made by Saket Kumar footer
+- Existing chat/files/history UI/API compatibility retained
+
+TASK/CALENDAR STORAGE NOTE
+--------------------------
+The first version stores tasks and calendar events in browser localStorage. They persist on the same browser/device, but they are not yet stored in the server database.
+
+GOOGLE LOGIN NOTE
+-----------------
+The Google OAuth configuration remains environment-based. For Render, keep GOOGLE_CLIENT_ID configured and make sure the Google OAuth client allows the deployed domain/origin.
