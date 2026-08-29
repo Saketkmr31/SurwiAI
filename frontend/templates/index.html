@@ -825,9 +825,271 @@
 
                 event.preventDefault();
 
-                showMessage(
-                    "Account creation screen will be added next.",
-                    "error"
+                const card = document.querySelector(".card");
+
+                card.innerHTML = `
+                    <h2>Create your account</h2>
+
+                    <p class="subtitle">
+                        Create an account to start using Surwi.
+                    </p>
+
+                    <div id="signupMessage" class="message"></div>
+
+                    <form id="signupForm">
+
+                        <label for="signupName">
+                            Full name
+                        </label>
+
+                        <input
+                            class="input"
+                            id="signupName"
+                            type="text"
+                            placeholder="Your name"
+                            autocomplete="name"
+                            required
+                        >
+
+                        <label for="signupEmail">
+                            Email address
+                        </label>
+
+                        <input
+                            class="input"
+                            id="signupEmail"
+                            type="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                        <label for="signupPassword">
+                            Password
+                        </label>
+
+                        <input
+                            class="input"
+                            id="signupPassword"
+                            type="password"
+                            placeholder="Minimum 8 characters"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                        >
+
+                        <label for="signupConfirmPassword">
+                            Confirm password
+                        </label>
+
+                        <input
+                            class="input"
+                            id="signupConfirmPassword"
+                            type="password"
+                            placeholder="Re-enter your password"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required
+                        >
+
+                        <button
+                            class="login-btn"
+                            id="signupBtn"
+                            type="submit"
+                        >
+                            Create account
+                        </button>
+
+                    </form>
+
+                    <div class="signup">
+                        Already have an account?
+
+                        <a href="#" id="backToLogin">
+                            Sign in
+                        </a>
+                    </div>
+                `;
+
+                const signupForm =
+                    document.getElementById("signupForm");
+
+                const signupBtn =
+                    document.getElementById("signupBtn");
+
+                const signupMessage =
+                    document.getElementById("signupMessage");
+
+                const backToLogin =
+                    document.getElementById("backToLogin");
+
+
+                function showSignupMessage(text, type) {
+
+                    signupMessage.textContent = text;
+
+                    signupMessage.className =
+                        "message " + type;
+                }
+
+
+                signupForm.addEventListener(
+                    "submit",
+                    async function (event) {
+
+                        event.preventDefault();
+
+                        const name =
+                            document
+                                .getElementById("signupName")
+                                .value
+                                .trim();
+
+                        const email =
+                            document
+                                .getElementById("signupEmail")
+                                .value
+                                .trim();
+
+                        const password =
+                            document
+                                .getElementById("signupPassword")
+                                .value;
+
+                        const confirmPassword =
+                            document
+                                .getElementById("signupConfirmPassword")
+                                .value;
+
+
+                        if (name.length < 2) {
+
+                            showSignupMessage(
+                                "Name must be at least 2 characters.",
+                                "error"
+                            );
+
+                            return;
+                        }
+
+
+                        if (password.length < 8) {
+
+                            showSignupMessage(
+                                "Password must be at least 8 characters.",
+                                "error"
+                            );
+
+                            return;
+                        }
+
+
+                        if (password !== confirmPassword) {
+
+                            showSignupMessage(
+                                "Passwords do not match.",
+                                "error"
+                            );
+
+                            return;
+                        }
+
+
+                        signupBtn.disabled = true;
+
+                        signupBtn.textContent =
+                            "Creating account...";
+
+
+                        try {
+
+                            const response =
+                                await fetch(
+                                    "/auth/signup",
+                                    {
+                                        method: "POST",
+
+                                        headers: {
+                                            "Content-Type":
+                                                "application/json"
+                                        },
+
+                                        body: JSON.stringify({
+                                            name: name,
+                                            email: email,
+                                            password: password
+                                        })
+                                    }
+                                );
+
+
+                            const data =
+                                await response.json();
+
+
+                            if (!response.ok) {
+
+                                throw new Error(
+                                    data.detail ||
+                                    "Could not create account."
+                                );
+                            }
+
+
+                            showSignupMessage(
+                                "Account created successfully. You can now sign in.",
+                                "success"
+                            );
+
+
+                            signupBtn.textContent =
+                                "Account created";
+
+
+                            setTimeout(
+                                function () {
+
+                                    window.location.reload();
+
+                                },
+                                1000
+                            );
+
+
+                        } catch (error) {
+
+                            console.error(
+                                "Signup error:",
+                                error
+                            );
+
+
+                            showSignupMessage(
+                                error.message ||
+                                "Unable to create account.",
+                                "error"
+                            );
+
+
+                            signupBtn.disabled = false;
+
+                            signupBtn.textContent =
+                                "Create account";
+                        }
+
+                    }
+                );
+
+
+                backToLogin.addEventListener(
+                    "click",
+                    function (event) {
+
+                        event.preventDefault();
+
+                        window.location.reload();
+
+                    }
                 );
 
             }
