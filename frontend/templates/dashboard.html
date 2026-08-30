@@ -144,6 +144,1208 @@ body{
 @media(max-width:800px){.upload-area{min-height:210px;padding:38px 18px}.files-inner{width:100%}}
 @media(max-height:759px) and (min-width:801px){.dashboard{overflow:auto}}
 
+
+/* ============================================================
+   MOBILE RESPONSIVE FIX — SURWI AI
+   Desktop layout stays unchanged.
+   Mobile: bottom navigation + full-width content + touch-friendly UI.
+   ============================================================ */
+@media (max-width:800px){
+  html,body{width:100%;min-width:0;overflow:hidden}
+  body{font-size:14px}
+
+  .app{display:block;width:100%;height:100dvh;min-height:100vh}
+
+  /* ---------- MOBILE NAVIGATION ---------- */
+  .sidebar{
+    position:fixed;
+    left:0;right:0;bottom:0;top:auto;
+    width:100%;height:68px;
+    min-height:68px;
+    padding:4px 5px env(safe-area-inset-bottom,0px);
+    border-right:0;
+    border-top:1px solid rgba(244,63,94,.16);
+    background:rgba(9,5,13,.97);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    display:flex;
+    flex-direction:row;
+    align-items:stretch;
+    z-index:100;
+  }
+
+  .brand,.new-chat,.section-title,.sidebar-bottom .user-card,.sidebar-bottom .logout-btn,
+  #settingsNav{display:none!important}
+
+  .sidebar-bottom{
+    margin:0;
+    width:100%;
+    display:flex;
+    align-items:stretch;
+    justify-content:space-around;
+    gap:2px;
+  }
+
+  .nav-item,
+  .sidebar-bottom .nav-item{
+    flex:1 1 0;
+    width:auto;
+    min-width:0;
+    height:60px;
+    padding:5px 2px 3px;
+    margin:0;
+    border-radius:10px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
+    font-size:8px;
+    line-height:1;
+    color:#817989;
+    text-align:center;
+  }
+
+  .nav-item span:not(.nav-icon){
+    display:block!important;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:100%;
+  }
+
+  .nav-icon{
+    width:auto;
+    height:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:17px;
+    line-height:1;
+  }
+
+  .nav-item.active{
+    box-shadow:inset 0 2px 0 #ef334d,0 0 18px rgba(225,29,72,.08);
+    background:linear-gradient(180deg,rgba(225,29,72,.16),rgba(139,92,246,.06));
+    color:#fff;
+  }
+
+  .nav-item:hover{background:rgba(225,29,72,.08)}
+  .nav-item.active .nav-icon{color:#ffd2df}
+
+  /* ---------- MAIN AREA ---------- */
+  .main{
+    width:100%;
+    height:100dvh;
+    min-height:0;
+    padding-bottom:68px;
+  }
+
+  .topbar{
+    height:58px;
+    min-height:58px;
+    padding:0 15px;
+  }
+
+  .page-title{font-size:14px}
+  .status{font-size:9px}
+  .status-dot{width:6px;height:6px;margin-right:5px}
+
+  /* ---------- ALL VIEWS ---------- */
+  .dashboard,.task-view,.calendar-view,.history-view,.files-view{
+    width:100%;
+    max-width:100%;
+    padding:18px 12px 24px;
+    overflow-x:hidden;
+  }
+
+  .content-inner,.history-inner,.files-inner,.home-grid{
+    width:100%;
+    max-width:none;
+    margin:0;
+  }
+
+  .section-head{margin-bottom:14px}
+  .section-head h2{font-size:22px;letter-spacing:-.5px}
+  .section-head p{font-size:10px;line-height:1.45}
+
+  /* ---------- HERO ---------- */
+  .premium-hero{
+    width:100%;
+    min-height:455px;
+    height:auto;
+    margin-bottom:13px;
+    padding:25px 20px 30px;
+    border-radius:21px;
+    align-items:flex-start;
+  }
+
+  .hero-copy{
+    width:100%;
+    max-width:100%;
+    padding:0;
+    position:relative;
+    z-index:6;
+  }
+
+  .greeting{font-size:13px;margin-bottom:9px}
+  .premium-hero .welcome-badge{font-size:9px;padding:5px 8px;margin-bottom:10px}
+
+  .premium-hero .welcome h1,
+  .premium-hero h1{
+    max-width:100%;
+    font-size:34px;
+    line-height:1.06;
+    letter-spacing:-1.4px;
+    margin-bottom:9px;
+  }
+
+  .premium-hero .welcome p,
+  .premium-hero p{
+    max-width:285px;
+    font-size:11px;
+    line-height:1.55;
+  }
+
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-top:18px;
+  }
+
+  .hero-primary,.hero-secondary{
+    height:42px;
+    min-height:42px;
+    padding:0 13px;
+    border-radius:11px;
+    font-size:10px;
+  }
+
+  .hero-date-wrap{right:14px;top:14px}
+  .premium-hero .date-pill{font-size:8px;padding:6px 8px}
+
+  .hero-person{
+    width:310px;
+    height:275px;
+    right:-70px;
+    bottom:-25px;
+    opacity:.46;
+    z-index:2;
+  }
+
+  .hero-person::before{width:300px;height:280px}
+  .hero-glow{width:350px;height:350px;right:-90px;top:20px}
+  .hero-orbit{width:420px;height:420px;right:-100px;top:-40px}
+
+  /* ---------- QUICK AI ---------- */
+  .quick-ai{
+    padding:11px;
+    border-radius:14px;
+    margin-bottom:11px;
+  }
+
+  .quick-ai-top{margin-bottom:7px}
+  .quick-ai-icon{width:30px;height:30px;border-radius:9px}
+  .quick-ai-title{font-size:11px}
+  .quick-ai-sub{font-size:9px}
+  .quick-form{gap:7px}
+  .quick-input{height:40px;min-width:0;font-size:11px;padding:0 10px}
+  .quick-send{width:40px;flex:0 0 40px}
+
+  /* ---------- STATS ---------- */
+  .stats{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    margin-bottom:11px;
+  }
+
+  .stat{min-width:0;padding:10px;border-radius:12px;gap:8px}
+  .stat-icon{width:31px;height:31px;flex:0 0 31px;font-size:14px}
+  .stat-label{font-size:8px}
+  .stat-value{font-size:16px}
+
+  /* ---------- DASHBOARD PANELS ---------- */
+  .workspace-grid{grid-template-columns:1fr;gap:9px}
+  .panel{padding:12px;border-radius:13px}
+  .panel-head{margin-bottom:9px}
+  .panel-title{font-size:12px}
+  .panel-sub{font-size:9px}
+  .task-preview,.mini-events{gap:6px}
+  .task-row,.mini-event{padding:8px}
+  .task-text,.event-title{font-size:10px}
+  .priority{font-size:8px;padding:3px 6px}
+
+  .tools-grid{grid-template-columns:1fr;gap:8px;margin-top:9px}
+  .tool-card{padding:12px;border-radius:12px}
+  .tool-icon{width:31px;height:31px;margin-bottom:7px}
+  .tool-card h3{font-size:11px}
+  .tool-card p{font-size:9px}
+
+  /* ---------- TASKS ---------- */
+  .task-layout{grid-template-columns:1fr;gap:10px}
+  .task-list-panel,.task-form-panel,.calendar-panel{padding:13px;border-radius:14px}
+  .task-full{padding:10px;gap:8px}
+  .task-name{font-size:11px}
+  .task-due{font-size:8px}
+  .danger-btn{font-size:8px;padding:5px 7px}
+
+  .field input,.field select{height:42px;font-size:11px}
+  .primary-btn{height:42px}
+
+  /* ---------- CALENDAR ---------- */
+  .calendar-toolbar{margin-bottom:10px}
+  .month-label{font-size:13px}
+  .month-btn{width:32px;height:32px}
+  .calendar-grid{gap:3px}
+  .weekday{font-size:8px;padding:4px 1px}
+  .day{
+    min-height:58px;
+    padding:5px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .day-number{font-size:9px}
+  .day-event{margin-top:3px;font-size:7px;padding:3px 4px}
+
+  .add-event-row{
+    grid-template-columns:1fr;
+    gap:7px;
+  }
+  .add-event-row input,.small-btn{height:41px;width:100%}
+
+  /* ---------- CHAT ---------- */
+  .chat-view{width:100%;min-width:0}
+  .chat-messages{
+    width:100%;
+    min-width:0;
+    padding:18px 12px 118px;
+    overflow-x:hidden;
+  }
+  .chat-inner{width:100%;max-width:none}
+  .chat-empty{min-height:55vh;padding:20px}
+  .chat-empty h2{font-size:25px}
+  .chat-empty p{font-size:12px}
+
+  .message-row{gap:7px;margin-bottom:15px;max-width:100%}
+  .message-avatar{width:29px;height:29px;flex:0 0 29px;font-size:10px}
+  .message-bubble{
+    max-width:calc(100% - 36px);
+    padding:10px 11px;
+    border-radius:13px;
+    font-size:12px;
+    line-height:1.55;
+  }
+
+  .message-bubble pre{max-width:100%;overflow-x:auto;font-size:10px}
+
+  .chat-composer-wrap{
+    left:0;
+    right:0;
+    bottom:68px;
+    padding:7px 10px 7px;
+    background:linear-gradient(to top,#08060d 72%,transparent);
+    z-index:90;
+  }
+
+  .chat-composer{
+    width:100%;
+    max-width:none;
+    padding:6px;
+    border-radius:15px;
+  }
+
+  .composer-row{gap:6px}
+  .chat-input{
+    min-width:0;
+    min-height:40px;
+    max-height:110px;
+    padding:10px 6px;
+    font-size:12px;
+  }
+  .attach-btn,.send-btn{width:40px;height:40px;flex:0 0 40px;border-radius:11px}
+
+  .attachment-bar{font-size:9px;padding:7px 8px;margin-bottom:6px}
+  .attach-panel{padding:9px;margin-bottom:6px}
+  .existing-files{max-height:90px}
+  .existing-file{max-width:170px;font-size:9px}
+
+  /* ---------- HISTORY ---------- */
+  .history-item{padding:13px 14px;border-radius:12px}
+  .history-title{font-size:11px;margin-bottom:5px}
+  .history-date{font-size:8px}
+
+  /* ---------- FILES ---------- */
+  .files-header{display:flex;flex-direction:column;gap:10px;margin-bottom:13px}
+  .upload-btn{width:100%;height:42px;padding:0 14px;font-size:10px}
+  .upload-area{min-height:185px;padding:35px 15px;margin-bottom:12px;border-radius:15px}
+  .upload-icon{width:50px;height:50px;margin-bottom:11px}
+  .upload-area h3{font-size:12px}
+  .upload-area p{font-size:9px;line-height:1.45}
+  .file-item{padding:11px 10px;gap:8px;border-radius:11px}
+  .file-icon{width:34px;height:34px;flex:0 0 34px}
+  .file-name{font-size:10px}
+  .file-meta{font-size:8px;margin-top:3px}
+  .file-actions{gap:4px}
+  .file-action{width:30px;height:30px;font-size:11px}
+
+  .made-by{
+    right:8px;
+    bottom:72px;
+    font-size:7px;
+    opacity:.7;
+  }
+
+  /* Modal stays usable on small screens */
+  .modal{width:calc(100vw - 24px);max-height:80vh;overflow:auto;padding:16px}
+}
+
+@media (max-width:430px){
+  .sidebar{height:64px;min-height:64px}
+  .main{padding-bottom:64px}
+  .nav-item,.sidebar-bottom .nav-item{height:57px;font-size:7px}
+  .nav-icon{font-size:16px;height:22px}
+  .topbar{height:54px;min-height:54px}
+  .dashboard,.task-view,.calendar-view,.history-view,.files-view{padding:15px 10px 20px}
+  .premium-hero{min-height:430px;padding:23px 17px 27px}
+  .premium-hero .welcome h1,.premium-hero h1{font-size:31px}
+  .hero-person{width:280px;height:250px;right:-75px;bottom:-25px;opacity:.40}
+  .hero-actions{gap:7px}
+  .hero-primary,.hero-secondary{height:40px;padding:0 11px;font-size:9px}
+  .chat-composer-wrap{bottom:64px}
+  .chat-messages{padding-left:9px;padding-right:9px}
+  .calendar-grid{gap:2px}
+  .day{min-height:54px;padding:4px}
+  .day-event{font-size:6.5px}
+}
+
+/* ================= MOBILE CHAT FINAL FIX ================= */
+
+@media (max-width: 800px) {
+
+  /* Chat area */
+  .chat-view {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .chat-messages {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 18px 10px 120px;
+    overflow-x: hidden;
+  }
+
+  .chat-inner {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Message row */
+  .message-row {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin: 0 0 15px;
+    min-width: 0;
+  }
+
+  /* Avatar FIX */
+  .message-avatar {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    max-width: 30px !important;
+    flex: 0 0 30px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border-radius: 50% !important;
+    overflow: hidden !important;
+
+    line-height: 30px !important;
+    text-align: center !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+  }
+
+  /* Assistant message */
+  .message-row.assistant {
+    justify-content: flex-start;
+  }
+
+  /* User message */
+  .message-row.user {
+    justify-content: flex-end;
+  }
+
+  .message-row.user .message-avatar {
+    order: 2;
+  }
+
+  /* Message bubble */
+  .message-bubble {
+    min-width: 0;
+    max-width: calc(100% - 37px) !important;
+    padding: 10px 11px !important;
+    border-radius: 13px !important;
+    font-size: 12px !important;
+    line-height: 1.55 !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Thinking bubble */
+  .message-bubble.typing {
+    white-space: normal;
+  }
+
+  /* Bottom composer */
+  .chat-composer-wrap {
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    padding: 7px 9px calc(7px + env(safe-area-inset-bottom)) !important;
+
+    z-index: 100 !important;
+  }
+
+  .chat-composer {
+    width: 100%;
+    max-width: 100%;
+    padding: 6px !important;
+    border-radius: 15px !important;
+  }
+
+  .composer-row {
+    width: 100%;
+    gap: 6px;
+  }
+
+  .chat-input {
+    min-width: 0;
+    width: 100%;
+    min-height: 40px;
+    padding: 10px 6px !important;
+    font-size: 12px !important;
+  }
+
+  .attach-btn,
+  .send-btn {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    flex: 0 0 40px !important;
+    border-radius: 11px !important;
+  }
+
+  /* Remove footer collision on mobile */
+  .made-by {
+    right: 8px !important;
+    bottom: 3px !important;
+    font-size: 7px !important;
+    opacity: .55;
+    z-index: 5 !important;
+  }
+}
+
+/* ===== FINAL MOBILE BOTTOM NAV FIX ===== */
+
+@media (max-width: 800px) {
+
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+
+    width: 100% !important;
+    height: 68px !important;
+    min-height: 68px !important;
+
+    padding: 4px 6px !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+
+    gap: 3px !important;
+
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  /* IMPORTANT:
+     sidebar-bottom ko layout container mat banao.
+     Iske children sidebar ke direct flex items banenge.
+  */
+  .sidebar-bottom {
+    display: contents !important;
+    width: auto !important;
+    margin: 0 !important;
+  }
+
+  /* Hide unnecessary mobile elements */
+  .sidebar .brand,
+  .sidebar .new-chat,
+  .sidebar .section-title,
+  .sidebar #settingsNav,
+  .sidebar .user-card,
+  .sidebar .logout-btn {
+    display: none !important;
+  }
+
+  /* Every navigation item gets equal width */
+  .sidebar > .nav-item {
+    display: flex !important;
+
+    flex: 1 1 0 !important;
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+
+    height: 58px !important;
+
+    margin: 0 !important;
+    padding: 4px 2px !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+
+    gap: 2px !important;
+
+    border-radius: 10px !important;
+
+    overflow: hidden !important;
+  }
+
+  /* Icons */
+  .sidebar > .nav-item .nav-icon {
+    width: 100% !important;
+    height: 30px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 18px !important;
+    line-height: 1 !important;
+
+    flex-shrink: 0 !important;
+  }
+
+  /* Hide labels on phone */
+  .sidebar > .nav-item > span:not(.nav-icon) {
+    display: none !important;
+  }
+
+  /* Active icon */
+  .sidebar > .nav-item.active {
+    background: linear-gradient(
+      180deg,
+      rgba(225,29,72,.18),
+      rgba(139,92,246,.08)
+    ) !important;
+
+    box-shadow:
+      inset 0 2px 0 #ef334d,
+      0 0 18px rgba(225,29,72,.08) !important;
+  }
+
+  /* Main content must stop above nav */
+  .main {
+    width: 100% !important;
+    height: 100dvh !important;
+    padding-bottom: 68px !important;
+  }
+
+  /* Footer credit should not collide with nav */
+  .made-by {
+    bottom: 72px !important;
+    right: 8px !important;
+    font-size: 7px !important;
+    opacity: .45 !important;
+  }
+}
+
+
+/* Smaller phones */
+@media (max-width: 430px) {
+
+  .sidebar {
+    height: 64px !important;
+    min-height: 64px !important;
+    padding: 3px 5px !important;
+  }
+
+  .sidebar > .nav-item {
+    height: 56px !important;
+  }
+
+  .sidebar > .nav-item .nav-icon {
+    height: 30px !important;
+    font-size: 17px !important;
+  }
+
+  .main {
+    padding-bottom: 64px !important;
+  }
+
+  .made-by {
+    bottom: 67px !important;
+  }
+}
+
+/* =====================================================
+   FINAL MOBILE RESPONSIVE FIX
+   BOTTOM NAV + CHAT + DASHBOARD
+   ===================================================== */
+
+@media (max-width: 800px) {
+
+  /* ===================================================
+     MOBILE BOTTOM NAVIGATION
+     =================================================== */
+
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+
+    width: 100% !important;
+    height: 68px !important;
+    min-height: 68px !important;
+
+    padding: 4px 5px !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: stretch !important;
+    justify-content: space-between !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 9999 !important;
+  }
+
+
+  /* ===================================================
+     BOTTOM NAV ITEMS
+     =================================================== */
+
+  .sidebar > .nav-item {
+    flex: 1 1 0 !important;
+
+    width: 0 !important;
+    min-width: 0 !important;
+
+    height: 60px !important;
+    min-height: 60px !important;
+
+    margin: 0 !important;
+    padding: 5px 2px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 3px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* Keep bottom-nav icons centered */
+  .sidebar > .nav-item .nav-icon {
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+
+  /* ===================================================
+     HIDE DESKTOP SIDEBAR CONTENT
+     =================================================== */
+
+  .sidebar .brand,
+  .sidebar .new-chat,
+  .sidebar .section-title,
+  .sidebar #settingsNav,
+  .sidebar .user-card,
+  .sidebar .logout-btn {
+    display: none !important;
+  }
+
+
+  /* ===================================================
+     MAIN CONTENT
+     =================================================== */
+
+  .main {
+    width: 100% !important;
+
+    height: 100dvh !important;
+    min-height: 0 !important;
+
+    padding-bottom: 68px !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+  }
+
+
+  /* ===================================================
+     TOP BAR
+     =================================================== */
+
+  .topbar {
+    height: 58px !important;
+    min-height: 58px !important;
+
+    padding: 0 12px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     ALL VIEWS
+     
+     IMPORTANT:
+     DO NOT FORCE DISPLAY HERE.
+     
+     JavaScript controls which view is visible.
+     =================================================== */
+
+  .view {
+    min-height: 0 !important;
+  }
+
+
+  /* ===================================================
+     DASHBOARD
+     =================================================== */
+
+  .dashboard {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* Dashboard content */
+  .home-grid {
+    width: 100% !important;
+    max-width: none !important;
+
+    padding: 10px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     CHAT VIEW
+     
+     IMPORTANT:
+     NO display:flex !important HERE.
+     
+     JS will set display:flex only when Chat opens.
+     =================================================== */
+
+  .chat-view {
+    height: calc(100dvh - 58px - 68px) !important;
+    min-height: 0 !important;
+
+    flex-direction: column !important;
+
+    overflow: hidden !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     CHAT MESSAGES
+     =================================================== */
+
+  .chat-messages {
+    flex: 1 1 auto !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    padding: 18px 10px 95px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  .chat-inner {
+    width: 100% !important;
+    max-width: none !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     CHAT EMPTY SCREEN
+     =================================================== */
+
+  .chat-empty {
+    width: 100% !important;
+
+    min-height: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+
+    padding: 20px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  .chat-empty h2 {
+    font-size: 22px !important;
+    margin-bottom: 8px !important;
+  }
+
+
+  .chat-empty p {
+    font-size: 11px !important;
+  }
+
+
+  /* ===================================================
+     CHAT MESSAGES / BUBBLES
+     =================================================== */
+
+  .message-row {
+    width: 100% !important;
+
+    display: flex !important;
+    align-items: flex-start !important;
+
+    gap: 7px !important;
+
+    margin-bottom: 15px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  .message-avatar {
+    width: 28px !important;
+    height: 28px !important;
+
+    min-width: 28px !important;
+    min-height: 28px !important;
+
+    flex: 0 0 28px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 10px !important;
+
+    border-radius: 50% !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  .message-bubble {
+    max-width: calc(100% - 38px) !important;
+
+    padding: 9px 11px !important;
+
+    font-size: 11px !important;
+    line-height: 1.5 !important;
+
+    overflow-wrap: anywhere !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     CHAT COMPOSER
+     =================================================== */
+
+  .chat-composer-wrap {
+    position: fixed !important;
+
+    left: 0 !important;
+    right: 0 !important;
+
+    bottom: 68px !important;
+
+    width: 100% !important;
+
+    height: auto !important;
+
+    padding: 7px 10px !important;
+
+    background:
+      linear-gradient(
+        to top,
+        #08060d 75%,
+        transparent
+      ) !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 10000 !important;
+  }
+
+
+  .chat-composer {
+    width: 100% !important;
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 6px !important;
+
+    border-radius: 15px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  .composer-row {
+    width: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     ATTACH BUTTON
+     =================================================== */
+
+  .attach-btn {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+    min-height: 40px !important;
+
+    flex: 0 0 40px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     CHAT INPUT
+     =================================================== */
+
+  .chat-input {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    min-height: 40px !important;
+    max-height: 110px !important;
+
+    flex: 1 1 auto !important;
+
+    padding: 10px 7px !important;
+
+    font-size: 12px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     SEND BUTTON
+     =================================================== */
+
+  .send-btn {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+    min-height: 40px !important;
+
+    flex: 0 0 40px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     ATTACHMENT PANEL
+     =================================================== */
+
+  .attach-panel {
+    max-width: calc(100vw - 20px) !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* ===================================================
+     REMOVE OLD SIDEBAR SPACING
+     =================================================== */
+
+  .sidebar-bottom {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+}
+
+
+/* =====================================================
+   SMALL PHONES
+   ===================================================== */
+
+@media (max-width: 430px) {
+
+  /* ---------- Bottom Navigation ---------- */
+
+  .sidebar {
+    height: 64px !important;
+    min-height: 64px !important;
+
+    padding: 3px 4px !important;
+  }
+
+
+  .sidebar > .nav-item {
+    height: 58px !important;
+    min-height: 58px !important;
+
+    padding: 4px 2px !important;
+
+    gap: 3px !important;
+  }
+
+
+  /* ---------- Main ---------- */
+
+  .main {
+    padding-bottom: 64px !important;
+  }
+
+
+  /* ---------- Chat ---------- */
+
+  .chat-view {
+    height: calc(100dvh - 58px - 64px) !important;
+  }
+
+
+  /* ---------- Chat Composer ---------- */
+
+  .chat-composer-wrap {
+    bottom: 64px !important;
+
+    padding: 6px 8px !important;
+  }
+
+
+  /* ---------- Chat Messages ---------- */
+
+  .chat-messages {
+    padding: 15px 8px 90px !important;
+  }
+
+
+  /* ---------- Chat Empty ---------- */
+
+  .chat-empty {
+    padding: 15px !important;
+  }
+
+
+  .chat-empty h2 {
+    font-size: 21px !important;
+  }
+
+
+  .chat-empty p {
+    font-size: 10px !important;
+  }
+
+
+  /* ---------- Message ---------- */
+
+  .message-bubble {
+    font-size: 11px !important;
+
+    padding: 8px 10px !important;
+  }
+
+
+  /* ---------- Buttons ---------- */
+
+  .attach-btn,
+  .send-btn {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+}
+
 </style></head><body>
 <div class="app">
 <aside class="sidebar">
