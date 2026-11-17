@@ -1,0 +1,48 @@
+name: Build SURWI JARVIS Android APK
+on:
+  push:
+    branches: [jarvis-android-apk]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Expand Android source
+        run: |
+          base64 -d jarvis-project.tar.xz.b64 | tar xJ
+          test -f app/build.gradle
+          test -f app/src/main/AndroidManifest.xml
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Compile signed debug APK
+        run: gradle --no-daemon --stacktrace :app:assembleDebug
+      - name: Verify APK
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$APK"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | head -18
+          mkdir -p dist
+          cp "$APK" dist/SURWI-JARVIS-v1.0.2.apk
+          sha256sum dist/SURWI-JARVIS-v1.0.2.apk > dist/SHA256.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SURWI-JARVIS-v1.0.2
+          path: dist/
+          if-no-files-found: error
+      - name: Publish APK release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create surwi-jarvis-v1.0.2 dist/SURWI-JARVIS-v1.0.2.apk dist/SHA256.txt --title 'SURWI JARVIS v1.0.2 Android' --notes 'Hindi / Hinglish voice assistant. Requires user-granted permissions for microphone, contacts and flashlight. Signed debug APK. Physical-device testing pending.' --target "$GITHUB_SHA"
