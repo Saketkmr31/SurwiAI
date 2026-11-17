@@ -40,15 +40,15 @@ jobs:
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$APK"
           "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$APK" | head -18
           mkdir -p dist
-          cp "$APK" dist/SURWI-JARVIS-v1.0.2.apk
-          sha256sum dist/SURWI-JARVIS-v1.0.2.apk > dist/SHA256.txt
+          cp "$APK" dist/SURWI-JARVIS-v1.0.4.apk
+          sha256sum dist/SURWI-JARVIS-v1.0.4.apk > dist/SHA256.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: SURWI-JARVIS-v1.0.2
+          name: SURWI-JARVIS-v1.0.4
           path: dist/
           if-no-files-found: error
       - name: Publish APK release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create surwi-jarvis-v1.0.2 dist/SURWI-JARVIS-v1.0.2.apk dist/SHA256.txt --title 'SURWI JARVIS v1.0.2 Android' --notes 'Hindi / Hinglish voice assistant. Requires user-granted permissions for microphone, contacts and flashlight. Signed debug APK. Physical-device testing pending.' --target "$GITHUB_SHA"
+          gh release create surwi-jarvis-v1.0.4 dist/SURWI-JARVIS-v1.0.4.apk dist/SHA256.txt --title 'SURWI JARVIS v1.0.4 Android' --notes 'Hands-free preview: opt-in visible microphone foreground service with Hi Jarvis wake phrases. Android may restrict background app launches. Signed debug APK; physical device tests pending.' --target "$GITHUB_SHA"
