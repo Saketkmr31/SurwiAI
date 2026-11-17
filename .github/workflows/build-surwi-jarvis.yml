@@ -1,0 +1,60 @@
+name: Build SURWI JARVIS Android APK
+
+on:
+  push:
+    branches: [jarvis-android-apk]
+    paths:
+      - 'jarvis-build/payload.b64'
+      - '.github/workflows/build-surwi-jarvis.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Compile and publish installable APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack Android source
+        run: |
+          mkdir -p jarvis-build/android
+          base64 --decode jarvis-build/payload.b64 | tar -xJ -C jarvis-build/android
+          test -f jarvis-build/android/app/build.gradle
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK platform
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Build debug-signed APK
+        run: |
+          gradle --no-daemon -p jarvis-build/android :app:assembleDebug --stacktrace
+      - name: Publish the APK
+        run: |
+          mkdir -p jarvis-build/download
+          cp jarvis-build/android/app/build/outputs/apk/debug/app-debug.apk jarvis-build/download/SURWI-JARVIS.apk
+          ls -lah jarvis-build/download/SURWI-JARVIS.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SURWI-JARVIS-Android-APK
+          path: jarvis-build/download/SURWI-JARVIS.apk
+          retention-days: 90
+          if-no-files-found: error
+      - name: Commit installable APK for direct download
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f jarvis-build/download/SURWI-JARVIS.apk
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish installable SURWI JARVIS Android APK"
+            git push origin HEAD:jarvis-android-apk
+          fi
