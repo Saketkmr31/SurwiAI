@@ -1,0 +1,68 @@
+name: Build SURWI JARVIS v1.0.5 Android APK
+on:
+  push:
+    branches: [jarvis-android-apk]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack reviewed Android project
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 --decode jarvis-v105-source.tar.xz.b64 | tar -xJ -C .
+          test -s app/src/main/AndroidManifest.xml
+          test -s app/src/main/java/com/surwi/jarvis/HandsFreeService.java
+          grep -q "versionCode 5" app/build.gradle
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install Android SDK 35
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.13'
+      - name: Compile APK
+        run: gradle --no-daemon --stacktrace :app:assembleDebug
+      - name: Verify APK and publish metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          SRC=app/build/outputs/apk/debug/app-debug.apk
+          test -s "$SRC"
+          unzip -t "$SRC" | tail -n 1
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$SRC"
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$SRC" | head -n 3
+          "$ANDROID_HOME/build-tools/35.0.0/aapt" dump permissions "$SRC"
+          cp "$SRC" SURWI-JARVIS-v1.0.5.apk
+          sha256sum SURWI-JARVIS-v1.0.5.apk | tee SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SURWI-JARVIS-v1.0.5
+          path: |
+            SURWI-JARVIS-v1.0.5.apk
+            SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publish direct APK in GitHub Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TAG=surwi-jarvis-v1.0.5
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" SURWI-JARVIS-v1.0.5.apk SHA256SUMS.txt --clobber
+          else
+            gh release create "$TAG" SURWI-JARVIS-v1.0.5.apk SHA256SUMS.txt \
+              --target "$GITHUB_SHA" \
+              --title "SURWI JARVIS v1.0.5 — voice diagnostics and fallback" \
+              --notes "Voice recognition fixes: mic conflict avoidance, Google Voice Input fallback, spoken reply test, session retry/watchdog and visible errors. Experimental hands-free: Android SpeechRecognizer is not designed for always-on detection. No real-device verification or Play Protect approval is claimed."
+          fi
