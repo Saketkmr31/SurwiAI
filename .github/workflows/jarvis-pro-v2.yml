@@ -1,0 +1,56 @@
+name: SURWI JARVIS PRO APK
+on:
+  push:
+    branches: [jarvis-pro-v2]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack full Kotlin Android source
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d jarvis-project.b64 | tar -xJf -
+          test -f app/src/main/AndroidManifest.xml
+          test -f app/src/main/java/com/surwi/jarvis/MainActivity.kt
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Android API 35
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Kotlin tests and Android APK
+        run: gradle --no-daemon --stacktrace :app:testDebugUnitTest :app:assembleDebug
+      - name: Verify package and signature
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$APK"
+          apksigner verify --verbose "$APK"
+          aapt dump badging "$APK" | head -n 7
+          sha256sum "$APK" > APK-SHA256.txt
+          cp "$APK" SURWI-JARVIS-PRO-v2.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: SURWI-JARVIS-PRO-v2-APK
+          path: |
+            SURWI-JARVIS-PRO-v2.apk
+            APK-SHA256.txt
+          if-no-files-found: error
+      - name: Publish prerelease APK
+        if: github.event_name == 'push' && github.ref == 'refs/heads/jarvis-pro-v2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="surwi-jarvis-pro-v2-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" SURWI-JARVIS-PRO-v2.apk APK-SHA256.txt --title "SURWI JARVIS PRO v2 build ${GITHUB_RUN_NUMBER}" --notes "Development APK. Physical Samsung voice/lockscreen and Play Protect testing required. AI backend must be configured separately." --prerelease --target "$GITHUB_SHA"
